@@ -1,15 +1,17 @@
 package com.example.scalfolding
 
+// import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,9 +21,12 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,84 +41,93 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ScalfoldingTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                Aplicacion(modifier = Modifier.fillMaxSize())
             }
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun prevista(){
-    Aplicacion(modifier =Modifier.fillMaxSize())
+    Aplicacion(modifier = Modifier.fillMaxSize())
 }
 
 @Composable
-fun Aplicacion(modifier :Modifier){
+fun Aplicacion(modifier: Modifier) {
     fun al_pulsar_el_carrito(){
-        Log.v("Aplicacion","se ha pulsado el boton y se ha utilizado la funcion de el carrito")
+        Log.v("Apliacion", "Se ha pulsado el boton y utilizado la funcion al pulsar el carrito")
     }
-    Scaffold (modifier = Modifier,
+
+    Scaffold(modifier = modifier,
         topBar = {
-            Barra_superior()
+            BarraSuperior()
         },
         bottomBar = {
             BarraInferior()
         },
         floatingActionButton = {
-            Icon(Icons.Rounded.ShoppingCart, contentDescription = "")
+            BotonFlotante(al_pusho_picar = {
+                al_pulsar_el_carrito()
+                al_pulsar_el_carrito()
+            })
         })
-    { paddin_interior ->
-        Column(modifier = Modifier.fillMaxSize().padding(paddin_interior).background(Color.Blue)) {
-            Text("Este es un mensjae del otro mundo",
+    { pading_interior ->
+        Column(modifier = Modifier.fillMaxSize().padding(pading_interior).background(Color.Cyan)) {
+            Text("Esto es un mensaje del otro mundo",
                 modifier = Modifier
-                .fillMaxSize(0.1f)
-                .background(Color.Cyan)
+                    .fillMaxHeight(0.1f)
+                    .background(color = Color.Blue)
             )
-            Greeting("Esto es la columna", modifier = Modifier)
-            Greeting("Esto es la columna", modifier = Modifier)
-            Greeting("Esto es la columna", modifier = Modifier)
-        }
 
+            Greeting("Esto es la columna")
+            Greeting("Esto es la columna")
+            Greeting("Esto es la columna")
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Barra_superior(){
-    TopAppBar(title = {
-        Text("titulo", modifier = Modifier)
-    })
+fun BarraSuperior(){
+    TopAppBar(
+        colors = topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.primary
+        ),
+        title = {
+            Text("Titulo de la barra", modifier = Modifier)
+        })
 }
 
 @Composable
 fun BarraInferior(){
     fun boton_pulsado_inferior(){
-        Log.v("Barra inferior","se ha pulsado el boton de abajo")
+        Log.v("BarraInferior", "Se ha pulsado el boton de la barra inferior")
     }
-    BottomAppBar{
-        Row(verticalAlignment = Alignment.CenterVertically){
+
+    BottomAppBar(
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        contentColor = MaterialTheme.colorScheme.primary
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Aqui va una opcion")
             Spacer(modifier = Modifier.width(15.dp))
             Icon(Icons.Rounded.ShoppingCart, contentDescription = "Boton de carrito de compras")
-            Boton_flotante(al_Pusho_picar = {})
+            BotonFlotante(al_pusho_picar = { boton_pulsado_inferior() })
         }
-
     }
 }
+
 @Composable
-fun Boton_flotante(al_Pusho_picar: () -> Unit){
-    FloatingActionButton(onClick = {}) {
+fun BotonFlotante(al_pusho_picar: () -> Unit){
+    FloatingActionButton(onClick = al_pusho_picar) {
         Icon(Icons.Rounded.ShoppingCart, contentDescription = "")
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier){
+fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier
